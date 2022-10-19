@@ -8,12 +8,12 @@
   border: 0;
   background-repeat: no-repeat;
   background-position: center;
-  transition: .8s ease;
+  transition: 0.5s linear;
   z-index: 2;
 }
 
 .profile__avatar-button:hover {
-  opacity: .8;
+  opacity: .5;
   background-color: #000;
   cursor: pointer;
 }
