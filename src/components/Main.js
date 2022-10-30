@@ -1,38 +1,23 @@
-import React from 'react';
-import api from '../utils/api';
+import React, { useContext } from 'react';
 import preloaderPath from '../images/preloader.gif';
 import Card from './Card';
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, onCardLike, onCardDelete }) {
 
-  const [userName, setUserName] = React.useState('');
-  const [userDescription, setUserDescription] = React.useState('');
-  const [userAvatar, setUserAvatar] = React.useState(preloaderPath);
-  const [cards, setCards] = React.useState([]);
-
-  React.useEffect(() => {
-    Promise.all([api.getInitialCards(), api.getUserInfo()])
-      .then(([initialCards, userData]) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-        setCards(initialCards.reverse());
-      })
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`);
-      });
-  }, []);
+  const currentUser = useContext(CurrentUserContext);
+  const { name, about, avatar } = currentUser;
 
   return (
     <main className="content">
       <section className="profile page__profile">
         <div className="profile__card">
-          <img className="profile__avatar" src={userAvatar} alt="Аватар пользователя" />
+          <img className="profile__avatar" src={avatar ? avatar : preloaderPath} alt="Аватар пользователя" />
           <button className="profile__avatar-button" onClick={onEditAvatar} aria-label="Обновить аватар" />
           <div className="profile__info">
-            <h1 className="profile__title">{userName}</h1>
+            <h1 className="profile__title">{name}</h1>
             <button type="button" className="profile__edit-button" onClick={onEditProfile} aria-label="Редактировать профиль" />
-            <p className="profile__description">{userDescription}</p>
+            <p className="profile__description">{about}</p>
           </div>
         </div>
         <button type="button" className="profile__add-button" onClick={onAddPlace} aria-label="Добавить карточку" />
@@ -44,6 +29,8 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
               key={card._id}
               card={card}
               onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
             />
           );
         })}

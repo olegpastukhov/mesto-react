@@ -2,7 +2,7 @@ class Api {
   constructor(config) {
     this._url = config.url;
     this._headers = config.headers;
-  }
+  };
 
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
@@ -10,21 +10,21 @@ class Api {
       headers: this._headers
     })
       .then(this._parseResponse);
-  }
+  };
 
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
       headers: this._headers
     })
       .then(this._parseResponse);
-  }
+  };
 
   _parseResponse(res) {
     if (res.ok) {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`)
-  }
+  };
 
   addCard(data) {
     return fetch(`${this._url}/cards`, {
@@ -35,34 +35,26 @@ class Api {
         link: data.link
       })
     })
-      .then(this._parseResponse);
-  }
+      .then(res => this._parseResponse(res));
+  };
 
   deleteCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers
     })
-      .then(this._parseResponse);
-  }
+      .then(res => this._parseResponse(res));
+  };
 
-  setLike(cardId) {
+  changeLikeCardStatus(cardId, isLiked) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'PUT',
+      method: `${!isLiked ? 'DELETE' : 'PUT'}`,
       headers: this._headers
     })
-      .then(this._parseResponse);
-  }
+      .then(res => this._parseResponse(res));
+  };
 
-  deleteLike(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'DELETE',
-      headers: this._headers
-    })
-      .then(this._parseResponse);
-  }
-
-  editUserInfo(data) {
+  setUserInfo(data) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
@@ -71,16 +63,16 @@ class Api {
         about: data.job
       })
     })
-      .then(this._parseResponse);
+      .then(res => this._parseResponse(res));
   }
 
-  editAvatar(data) {
+  setAvatar(data) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify(data)
     })
-      .then(this._parseResponse);
+      .then(res => this._parseResponse(res));
   }
 }
 
