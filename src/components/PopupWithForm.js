@@ -10,10 +10,13 @@ function PopupWithForm(props) {
           action="#"
           className="popup__form form"
           onSubmit={props.onSubmit}>
-          {props.children}
+          <fieldset className="form__set">
+            {props.children}
+            <button type="submit" className="form__submit">{props.onLoading ? "Сохранение..." : "Сохранить"}</button>
+          </fieldset>
         </form>
       </div>
-    </div>
+    </div >
   );
 }
 export default PopupWithForm;

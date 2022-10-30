@@ -13,6 +13,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
       title,
       link
     });
+    e.target.reset();
   };
 
   function handleTitleChange(e) {
@@ -30,17 +31,14 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      onLoading={onLoading}
     >
-      <fieldset className="form__set">
-        <input type="text" name="title" id="title" placeholder="Название" minLength="2" maxLength="30"
-          className="form__input" onChange={handleTitleChange} required />
-        <span id="title-error" className="form__error-message"></span>
-        <input type="url" name="link" id="link" placeholder="Ссылка на картинку"
-          className="form__input" onChange={handleLinkChange} required />
-        <span id="link-error" className="form__error-message"></span>
-        <button type="submit" className="form__submit">{onLoading ? "Сохранение..." : "Создать"}</button>
-      </fieldset>
-
+      <input type="text" name="title" id="title" placeholder="Название" minLength="2" maxLength="30"
+        className="form__input" onChange={handleTitleChange} required />
+      <span id="title-error" className="form__error-message"></span>
+      <input type="url" name="link" id="link" placeholder="Ссылка на картинку"
+        className="form__input" onChange={handleLinkChange} required />
+      <span id="link-error" className="form__error-message"></span>
     </PopupWithForm>
   );
 }

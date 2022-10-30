@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onLoading }) {
 
   const avatarRef = useRef();
 
@@ -11,6 +11,8 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     onUpdateAvatar({
       avatar: avatarRef.current.value,
     });
+
+    e.target.reset();
   }
 
   return (
@@ -20,13 +22,10 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      onLoading={onLoading}
     >
-      <fieldset className="form__set">
-        <input type="url" name="avatar" id="avatar" placeholder="Ссылка на картинку" className="form__input" required ref={avatarRef} />
-        <span id="avatar-error" className="form__error-message"></span>
-        <button type="submit" className="form__submit">Сохранить</button>
-      </fieldset>
-
+      <input type="url" name="avatar" id="avatar" placeholder="Ссылка на картинку" className="form__input" required ref={avatarRef} />
+      <span id="avatar-error" className="form__error-message"></span>
     </PopupWithForm>
   );
 }
